@@ -3,6 +3,7 @@ import ejs from 'ejs'
 import view from "@fastify/view"
 import formbody from '@fastify/formbody'
 import url from 'node:url'
+import { PrismaClient } from '@prisma/client'
 
 // 6-character random short name
 // 36 ** 6 == 2_176_782_336
@@ -17,14 +18,21 @@ function randomShortName() {
   return short
 }
 
-// in memory "database"
-// TODO: actual database
-const db = {}
-const addToDB = (shortname, url) => {
-  db[shortname] = url 
+const prisma = new PrismaClient()
+
+const addToDB = async (shortened, original) => {
+  return await prisma.url.create({
+    data: {
+      original,
+      shortened,
+    },
+  })
 }
-const getFromDB = (shortname) => {
-  return db[shortname]
+
+const getFromDB = async (shortened) => {
+  return await prisma.url.findUnique({
+    where: { shortened }
+  })
 }
 
 const fastify = Fastify({
@@ -39,7 +47,7 @@ async function routes (fastify, options) {
     reply.view("/templates/new.ejs", { text: "" });
   });
 
-  fastify.post("/", (req, reply) => {
+  fastify.post("/", async (req, reply) => {
     // if url is valid but missing protocol, add it
     let parsed = url.parse(req.body.url)
     if (!parsed.protocol) {
@@ -47,18 +55,18 @@ async function routes (fastify, options) {
     }
     let mapped_url = new URL(parsed.href).href
     let name = randomShortName();
-    addToDB(name, mapped_url)
+    await addToDB(name, mapped_url)
     let new_url =  req.hostname + '/' + name
-    reply.view("/templates/created.ejs", { new_url, mapped_url });
+    return reply.view("/templates/created.ejs", { new_url, mapped_url });
   });
 
-  fastify.get("/:short", (req, reply) => {
+  fastify.get("/:short", async (req, reply) => {
     let {short} = req.params
-    let url = getFromDB(short)
-    if (url) {
-      reply.redirect(302, url);
+    let url = await getFromDB(short)
+    if (url && url.original) {
+      return reply.redirect(302, url.original);
     } else {
-      reply.code(404).send({message: "No such shortcode"})
+      return reply.code(404).send({message: "No such shortcode"})
     }
   })
 }
