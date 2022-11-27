@@ -2,15 +2,30 @@ import Fastify from 'fastify'
 import ejs from 'ejs'
 import view from "@fastify/view"
 import formbody from '@fastify/formbody'
+import url from 'node:url'
 
+// 6-character random short name
+// 36 ** 6 == 2_176_782_336
+// should be ~1e5 before a collision, which is good enough for this toy example
+const chars = "abcdefghijklmnopqrstuvwxyz0123456789"
 function randomShortName() {
-  let names = ['aaaaa', 'cute-name', 'pets', 'some-url', 'another']
-  let i = Math.floor(Math.random() * names.length)
-  return names[i]
+  let short = ""
+  for (let i = 0; i < 6; i++) {
+    let ind = Math.floor(Math.random() * chars.length)
+    short += chars[ind]
+  }
+  return short
 }
 
 // in memory "database"
+// TODO: actual database
 const db = {}
+const addToDB = (shortname, url) => {
+  db[shortname] = url 
+}
+const getFromDB = (shortname) => {
+  return db[shortname]
+}
 
 const fastify = Fastify({
   logger: true
@@ -25,17 +40,26 @@ async function routes (fastify, options) {
   });
 
   fastify.post("/", (req, reply) => {
-    let mapped_url = req.body.url
+    // if url is valid but missing protocol, add it
+    let parsed = url.parse(req.body.url)
+    if (!parsed.protocol) {
+      parsed = url.parse("https://" + req.body.url)
+    }
+    let mapped_url = new URL(parsed.href).href
     let name = randomShortName();
-    db[name] = mapped_url
-    let new_url =  '/' + name
+    addToDB(name, mapped_url)
+    let new_url =  req.hostname + '/' + name
     reply.view("/templates/created.ejs", { new_url, mapped_url });
   });
 
-  fastify.get("/:short_url", (req, reply) => {
-    let {short_url} = req.params
-    let url = db[short_url]
-    reply.redirect(302, url);
+  fastify.get("/:short", (req, reply) => {
+    let {short} = req.params
+    let url = getFromDB(short)
+    if (url) {
+      reply.redirect(302, url);
+    } else {
+      reply.code(404).send({message: "No such shortcode"})
+    }
   })
 }
 
