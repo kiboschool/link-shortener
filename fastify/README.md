@@ -3,7 +3,7 @@
 ## Routes
 
 - get the page for creating a new short url
-- get a given url and redirect
 - post a url to create
+- get a given url and redirect
 - get the list of urls created
 

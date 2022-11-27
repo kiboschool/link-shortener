@@ -8,10 +8,11 @@ Create a new short url
   <%= text %>
 </p>
 
-<form>
-<label>URL to shorten</label>
-<input type="text" />
-
+<form method="post" action="/">
+  <label for="url">URL to shorten</label>
+  <input type="text" name="url" id="url" />
+  <button>Create</submit>
 </form>
+
 </body>
 </html>
