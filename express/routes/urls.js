@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var url = require('url');
+var PrismaClient = require('@prisma/client').PrismaClient;
 
 // 6-character random short name
 // 36 ** 6 == 2_176_782_336
@@ -14,19 +15,48 @@ function randomShortName() {
   }
   return short
 }
-const shortToUrl = (shortname, req) => `${req.hostname}/${shortname}`
+
+const getHostname = (req) => `${req.hostname}:${req.app.get('port')}`
+const shortToUrl = (shortname, req) => `${getHostname(req)}/${shortname}`
 
 /* GET page to create a new url */
 router.get('/', function(req, res) {
   res.render('new');
 });
 
+const prisma = new PrismaClient()
+
+const addToDB = async (shortened, original) => {
+  return await prisma.url.create({
+    data: {
+      original,
+      shortened,
+    },
+  })
+}
+
+const getFromDB = async (shortened) => {
+  return await prisma.url.findUnique({
+    where: { shortened }
+  })
+}
+
+const updateInDB = async (url, shortened) => {
+  return await prisma.url.update({
+    where: { id: url.id },
+    data: { shortened }
+  })
+}
+
 const pageSize = 50;
-const getAllFromDB = async () => [];
-const getFromDB = async () => ({});
-const addToDB = async (...params) => (params);
-const deleteFromDB = async (...params) => (params);
-const updateInDB = async (...params) => (params);
+const getAllFromDB = async ({page}) => {
+  page = page - 1;
+  return await prisma.url.findMany({skip: page * pageSize, take: pageSize})
+}
+
+const deleteFromDB = async (shortened) => {
+  return await prisma.url.delete({where: {shortened}})
+}
 
 router.post("/", async (req, res) => {
   // if url is valid but missing protocol, add it
@@ -66,7 +96,7 @@ router.post('/urls/delete/:short', async (req, res) => {
 })
 
 router.get('/urls/edit/:short', async (req, res) => {
-    let hostname = req.hostname
+    let hostname = getHostname(req)
     let {short} = req.params
     let url = await getFromDB(short)
     if (url && url.original) {
@@ -77,7 +107,7 @@ router.get('/urls/edit/:short', async (req, res) => {
   })
 
 router.post('/urls/edit/:short', async (req, res) => {
-  let hostname = req.hostname
+  let hostname = getHostname(req)
   let {short} = req.params
   let url = await getFromDB(short)
   if (url && url.original) {
