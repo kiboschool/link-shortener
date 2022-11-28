@@ -1,0 +1,33 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Url Shortener - Fastify & Prisma</title>
+  <meta name="description" content="Demo URL shortener app w/ fastify and prisma">
+  <link rel="stylesheet" href="public/style.css">
+  <link rel="icon" sizes="192x192" href="public/favicon.png">
+</head>
+<body>
+<main>
+  <h1>The urls that have been created</h1>
+
+  <a href="/">Create Url</a>
+
+  <h3>The shortened versions redirect to the others.</h3>
+
+  <h2><span>Short url:</span> Original</h2>
+
+  <% for (let url of urls) { %>
+    <p>
+      <strong><%= url.shortenedUrl %></strong>: <%= url.original %>
+    </p>
+  <% } %>
+
+  <% if (nextPage) { %>
+    <a href="/all?page=<%= nextPage %>">Page <%= nextPage %></a>
+  <% } %>
+
+</main>
+
+</body>
+</html>

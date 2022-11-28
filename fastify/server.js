@@ -37,6 +37,12 @@ const getFromDB = async (shortened) => {
   })
 }
 
+const pageSize = 50;
+const getAllFromDB = async ({page}) => {
+  page = page - 1;
+  return await prisma.url.findMany({skip: page * pageSize, take: pageSize})
+}
+
 const fastify = Fastify({
   logger: true
 })
@@ -44,6 +50,8 @@ const fastify = Fastify({
 fastify.register(view, { engine: { ejs } });
 fastify.register(formbody)
 fastify.register(fstatic, { prefix: '/public/', root: path.join(url.fileURLToPath(new URL('.', import.meta.url)), 'public') })
+
+const shortToUrl = (shortname, req) => req.hostname + "/" + shortname
 
 async function routes (fastify, options) {
   fastify.get("/", (req, reply) => {
@@ -56,11 +64,11 @@ async function routes (fastify, options) {
     if (!parsed.protocol) {
       parsed = url.parse("https://" + req.body.url)
     }
-    let mapped_url = new URL(parsed.href).href
-    let name = randomShortName();
-    await addToDB(name, mapped_url)
-    let new_url =  req.hostname + '/' + name
-    return reply.view("/templates/created.ejs", { new_url, mapped_url });
+    let original = new URL(parsed.href).href
+    let shortened = randomShortName();
+    await addToDB(shortened, original)
+    let shortenedUrl = shortToUrl(shortened, req)
+    return reply.view("/templates/created.ejs", { shortenedUrl, original });
   });
 
   fastify.get("/:short", async (req, reply) => {
@@ -71,6 +79,19 @@ async function routes (fastify, options) {
     } else {
       return reply.code(404).send({message: "No such shortcode"})
     }
+  })
+
+  fastify.get('/urls', async (req, reply) => {
+    let page = req.query.page || "1";
+    page = parseInt(page)
+    let urls = await getAllFromDB({ page });
+    urls = urls.map(url => ({ shortenedUrl: shortToUrl(url.shortened, req), ...url}))
+    let more = urls.length == pageSize;
+    let nextPage = null;
+    if (more) {
+      nextPage = (page || 1) + 1;
+    }
+    return reply.view("/templates/all.ejs", { urls, nextPage });
   })
 }
 

@@ -4,11 +4,11 @@ body {
   margin: 20px;
 }
 
-h1, h3 {
+h1, h2, h3 {
   font-family: 'Exo 2', sans-serif;
 }
 
-h3 span {
+h2 span, h3 span, strong {
   background-color: #90f74cbd;
   line-height: 1.22em;
 }
@@ -17,6 +17,7 @@ main, input, button {
   font-family: 'Nunito Sans', sans-serif;
   margin: auto;
   max-width: 400px;
+  font-size: 16px;
 }
 
 form {
@@ -32,4 +33,30 @@ input, button {
 
 input {
   font-size: 16px;
+}
+
+textarea {
+  font-size: 18px;
+  padding: 0.4em;
+  text-align: center;
+  resize: none;
+  width: 250px;
+  height: 2em;
+  flex-grow: 1;
+}
+
+div {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 2em;
+}
+
+div button {
+  padding: 0.2em 0.2em;
+  flex-grow: 0;
+}
+
+textarea, p {
+  font-family: 'Exo 2', sans-serif;
 }

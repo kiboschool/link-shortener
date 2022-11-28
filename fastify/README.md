@@ -5,21 +5,15 @@
 - "/" - form to create a short url
 - "/" - form url create handler
 - "/:short_url" - get a given url and redirect
+- "/urls" - show the list of all urls created
 
 ## Routes to do
 
-- "/urls" - get the list of urls created
 - "/urls/:short" - page to view and edit a url
 - "/urls/:short" - handler to edit url
 
-## TODO
+## Advanced features that aren't present
 
-- UI niceness
--   copy url
--   home / list links
-
-## Advanced
-
-- users / sign in
-- stats
 - random cookie-based user session
+- users / sign in
+- stats for urls
