@@ -24,7 +24,7 @@ same (and faster to build each one).
 ### "top tier" frameworks
 
 - [x] https://www.fastify.io/: /fastify (with ejs + prisma)
-- https://expressjs.com/
+- [x] https://expressjs.com/ /express (ejs with express-generator)
 - https://remix.run/
 - https://nextjs.org/
 - https://nuxtjs.org/
