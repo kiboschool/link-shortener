@@ -4,23 +4,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Url Shortener - Fastify & Prisma</title>
   <meta name="description" content="Demo URL shortener app w/ fastify and prisma">
-  <link rel="stylesheet" href="public/style.css">
-  <link rel="icon" sizes="192x192" href="public/favicon.png">
+  <link rel="stylesheet" href="/public/style.css">
+  <link rel="icon" sizes="192x192" href="/public/favicon.png">
 </head>
 <body>
 <main>
-  <h1>The urls that have been created</h1>
+  <h1>All the urls that have been created</h1>
 
   <a href="/">Create Url</a>
 
-  <h3>The shortened versions redirect to the others.</h3>
-
-  <h2><span>Short url:</span> Original</h2>
+  <h3>The shortened versions redirect to the originals</h3>
 
   <% for (let url of urls) { %>
-    <p>
-      <strong><%= url.shortenedUrl %></strong>: <%= url.original %>
-    </p>
+    <div class="list-item">
+      <div class="url">
+        <textarea readonly><%= url.shortenedUrl %></textarea>
+        <button>
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg"><title>copy</title><path fill="none" d="M0 0h24v24H0z"></path><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>
+        </button>
+      </div>
+      <div class="original">
+        <%= url.original %> 
+      </div>
+      <div class="options">
+        <a href="urls/edit/<%= url.shortened %>">Edit</a> 
+        <form method="post" action="urls/delete/<%= url.shortened %>"><button>Delete</button></form>
+      </div>
+    </div>
   <% } %>
 
   <% if (nextPage) { %>
@@ -28,6 +38,24 @@
   <% } %>
 
 </main>
+
+<script type="text/javascript">
+
+  let textareas = document.querySelectorAll('textarea');
+  for (let ta of textareas) {
+    ta.addEventListener('focus', () => {
+        ta.select();
+    })
+  }
+  for (let button of document.querySelectorAll('button')) {
+    button.addEventListener('click', () => {
+      let textarea = button.parentElement.querySelector('textarea')
+      textarea.select();
+      navigator.clipboard.writeText(textarea.value);
+    });
+  }
+
+</script>
 
 </body>
 </html>

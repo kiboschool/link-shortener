@@ -1,18 +1,20 @@
 # url shortener - fastify
 
+Get started:
+
+- Install Dependencies: `npm install`
+- Setup DB: install postgres, add a `DATABASE_URL` to `.env`, and `npx prisma migrate dev`
+- Run the dev server: `node server.js`
+
 ## Routes
 
 - "/" - form to create a short url
-- "/" - form url create handler
-- "/:short_url" - get a given url and redirect
+- "/:short" - fetch a given url and redirect
 - "/urls" - show the list of all urls created
+- "/urls/edit/:short" - page to view and edit a url
+- "/urls/delete/:short" - handler to delete url
 
-## Routes to do
-
-- "/urls/:short" - page to view and edit a url
-- "/urls/:short" - handler to edit url
-
-## Advanced features that aren't present
+## Advanced features, which aren't present
 
 - random cookie-based user session
 - users / sign in

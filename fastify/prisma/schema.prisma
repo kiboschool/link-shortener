@@ -11,8 +11,8 @@ datasource db {
 }
 
 model Url {
-   id         Int       @id @default(autoincrement())
-   original   String    @db.VarChar(255)
-   shortened  String    @db.VarChar(255) @unique
-   createdAt  DateTime  @default(now()) @db.Timestamp(6)
+  id        Int      @id @default(autoincrement())
+  original  String   @db.VarChar(255)
+  shortened String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now()) @db.Timestamp(6)
 }
