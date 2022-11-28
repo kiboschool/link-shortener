@@ -17,7 +17,6 @@
 - UI niceness
 -   copy url
 -   home / list links
--   about page
 
 ## Advanced
 

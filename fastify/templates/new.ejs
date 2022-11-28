@@ -1,18 +1,27 @@
 <html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Url Shortener - Fastify & Prisma</title>
+  <meta name="description" content="Demo URL shortener app w/ fastify and prisma">
+  <link rel="stylesheet" href="public/style.css">
+  <link rel="icon" sizes="192x192" href="/favicon.png">
+</head>
 <body>
-<h1>
-Create a new short url
-</h1>
+<main>
+  <h1>
+    Create a new short url
+  </h1>
 
-<p>
-  <%= text %>
-</p>
+  <h3><span>Enter a url</span></h3>
+  
+  <form method="post" action="/">
+    <input placeholder="https://example.com" type="text" name="url" id="url" />
+    <button>CREATE</button>
+  </form>
 
-<form method="post" action="/">
-  <label for="url">URL to shorten</label>
-  <input type="text" name="url" id="url" />
-  <button>Create</submit>
-</form>
+  <h3>The shortened version will redirect to the one you enter.</h3>
+</main>
 
 </body>
 </html>

@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2&family=Nunito+Sans&family=Simonetta&display=swap');
+
+body {
+  margin: 20px;
+}
+
+h1, h3 {
+  font-family: 'Exo 2', sans-serif;
+}
+
+h3 span {
+  background-color: #90f74cbd;
+  line-height: 1.22em;
+}
+
+main, input, button {
+  font-family: 'Nunito Sans', sans-serif;
+  margin: auto;
+  max-width: 400px;
+}
+
+form {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+input, button {
+  padding: 0.4em 0.4em;
+  flex-grow: 1;
+}
+
+input {
+  font-size: 16px;
+}

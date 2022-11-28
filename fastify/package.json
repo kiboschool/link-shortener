@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@fastify/formbody": "^7.3.0",
+    "@fastify/static": "^6.5.1",
     "@fastify/view": "^7.3.0",
     "@prisma/client": "^4.6.1",
     "ejs": "^3.1.8",

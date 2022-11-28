@@ -1,8 +1,10 @@
 import Fastify from 'fastify'
 import ejs from 'ejs'
-import view from "@fastify/view"
+import view from '@fastify/view'
 import formbody from '@fastify/formbody'
+import fstatic from '@fastify/static'
 import url from 'node:url'
+import path from 'node:path'
 import { PrismaClient } from '@prisma/client'
 
 // 6-character random short name
@@ -41,10 +43,11 @@ const fastify = Fastify({
 
 fastify.register(view, { engine: { ejs } });
 fastify.register(formbody)
+fastify.register(fstatic, { prefix: '/public/', root: path.join(url.fileURLToPath(new URL('.', import.meta.url)), 'public') })
 
 async function routes (fastify, options) {
   fastify.get("/", (req, reply) => {
-    reply.view("/templates/new.ejs", { text: "" });
+    reply.view("/templates/new.ejs");
   });
 
   fastify.post("/", async (req, reply) => {
