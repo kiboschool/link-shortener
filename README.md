@@ -18,13 +18,13 @@ same (and faster to build each one).
 ### "raw" JS
 
 - https://node.readthedocs.io/en/latest/api/http/
-- https://bun.sh/
+- [x] https://bun.sh/ /bun (with ejs and bun's sqlite)
 - https://deno.land/
 
 ### "top tier" frameworks
 
 - [x] https://www.fastify.io/: /fastify (with ejs + prisma)
-- [x] https://expressjs.com/ /express (ejs with express-generator)
+- [x] https://expressjs.com/ /express (ejs with express-generator, prisma)
 - https://remix.run/
 - https://nextjs.org/
 - https://nuxtjs.org/
@@ -49,7 +49,7 @@ same (and faster to build each one).
 
 ## Python Top Frameworks
 
-- https://flask.palletsprojects.com/en/2.2.x/
+- [x] https://flask.palletsprojects.com/en/2.2.x/ /flask (with sqlite)
 - https://www.djangoproject.com/
 - https://fastapi.tiangolo.com/
 - https://docs.aiohttp.org/en/stable/
