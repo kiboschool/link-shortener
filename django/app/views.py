@@ -78,8 +78,9 @@ def update(request, short):
     try:
         url = Url.objects.get(shortened=short)
         updated_shortname = request.POST['shortened']
-        url.shortened = updated_shortname
-        url.save()
+        if updated_shortname:
+            url.shortened = updated_shortname
+            url.save()
         return redirect("/urls/edit/" + url.shortened)
     except Url.DoesNotExist:
         return HttpResponseNotFound("No such shortcode")
