@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, delete
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 import string
@@ -49,6 +49,15 @@ def create_url(db: Session, url: UrlCreate):
 def get_url(db: Session, shortened: str):
     return db.query(UrlModel).filter(UrlModel.shortened == shortened).first()
 
-def get_urls(db: Session, page: int = 1, limit: int = 100):
+def get_urls(db: Session, page: int = 1, limit: int = 50):
     offset = (page - 1) * limit
     return db.query(UrlModel).offset(offset).limit(limit).all()
+
+def update_url(db: Session, url: UrlModel, shortened: str):
+    url.shortened = shortened
+    db.commit()
+
+def delete_url(db: Session, shortened: str):
+    db.execute(delete(UrlModel).where(UrlModel.shortened == shortened))
+    db.commit()
+    return True
