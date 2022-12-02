@@ -50,8 +50,8 @@ same (and faster to build each one).
 ## Python Top Frameworks
 
 - [x] https://flask.palletsprojects.com/en/2.2.x/ /flask (with sqlite)
-- https://www.djangoproject.com/
-- https://fastapi.tiangolo.com/
+- [x] https://fastapi.tiangolo.com/ /fastapi (sqlite + sqlalchemy)
+- [x] https://www.djangoproject.com/ /django (postgres)
 - https://docs.aiohttp.org/en/stable/
 
 ## More Python
