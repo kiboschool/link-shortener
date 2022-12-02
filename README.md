@@ -51,7 +51,7 @@ same (and faster to build each one).
 
 - [x] https://flask.palletsprojects.com/en/2.2.x/ /flask (with sqlite)
 - [x] https://fastapi.tiangolo.com/ /fastapi (sqlite + sqlalchemy)
-- [x] https://www.djangoproject.com/ /django (postgres)
+- [x] https://www.djangoproject.com/ /django (sqlite)
 - https://docs.aiohttp.org/en/stable/
 
 ## More Python
