@@ -17,7 +17,7 @@ same (and faster to build each one).
 
 ### "raw" JS
 
-- https://node.readthedocs.io/en/latest/api/http/
+- [x] https://node.readthedocs.io/en/latest/api/http/ /node
 - [x] https://bun.sh/ /bun (with ejs and bun's sqlite)
 - https://deno.land/
 
