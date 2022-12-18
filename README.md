@@ -5,6 +5,24 @@ remap urls to shorter ones / redirect 302 on access
 Using the same html, css, and logic every time, so they should all be roughly the
 same (and faster to build each one).
 
+## Languages and frameworks
+
+- Flask
+- Django
+- FastAPI
+- Node
+- Express
+- Fastify
+- Bun
+
+- Sinatra
+- Rails
+- Go
+- Laravel
+- .Net
+- Spring/Boot
+
+
 ## Lots of different ways
 
 - using different js and python frameworks

@@ -1,4 +1,4 @@
-# url shortener - express
+# Url shortener - Express
 
 https://expressjs.com/en/starter/generator.html
 
@@ -15,10 +15,3 @@ Get started:
 - "/urls" - show the list of all urls created
 - "/urls/edit/:short" - page to view and edit a url
 - "/urls/delete/:short" - handler to delete url
-
-## Advanced features, which aren't present
-
-- random cookie-based user session
-- users / sign in
-- stats for urls
-

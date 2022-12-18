@@ -1,0 +1,40 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Url Shortener -  Flask & SQLite</title>
+  <meta name="description" content="Demo URL shortener app w/ flask and sqlite">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" sizes="192x192" href="/favicon.png">
+</head>
+
+<body>
+<main>
+  <h1>Edit</h1>
+
+  <h3>This url: <span>{{ hostname }}/{{ url['shortened'] }}</span></h3>
+  <h3>Redirects to: <span>{{ url.original }}</span></h3>
+
+  <p>Edit the short name:</p>
+  <div>
+    <form method="post">
+      {{ hostname }}/
+      <input type="text" name="shortened" value="{{ url.shortened }}"></input>
+      <button>Save</button>
+    </form>
+  </div>
+  {% if error %}
+    <div class="error">
+      <strong>Error</strong>: {{ error }}
+    </div>
+  {% endif %}
+
+
+  <form method="post" action="urls/delete/{{ url.shortened }}"><button>Delete</button></form>
+
+  <p><a href="/">Create another</a></p>
+  <p><a href="/urls">View all</a></p>
+
+</main>
+</body>
+</html>

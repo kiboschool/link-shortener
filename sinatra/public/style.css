@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2&family=Nunito+Sans&family=Simonetta&display=swap');
+
+body {
+  margin: 20px;
+}
+
+h1, h2, h3 {
+  font-family: 'Exo 2', sans-serif;
+}
+
+h2 span, h3 span {
+  background-color: #90f74cbd;
+  line-height: 1.22em;
+}
+
+main, input, button {
+  font-family: 'Nunito Sans', sans-serif;
+  max-width: 500px;
+  font-size: 16px;
+}
+
+form {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+input, button {
+  padding: 0.4em 0.4em;
+  flex-grow: 1;
+}
+
+input {
+  font-size: 16px;
+}
+
+textarea {
+  font-size: 18px;
+  padding: 0.4em;
+  text-align: center;
+  resize: none;
+  width: 250px;
+  height: 2em;
+  flex-grow: 1;
+}
+
+.shortened {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 2em;
+}
+
+.shortened button {
+  padding: 0.2em 0.2em;
+  flex-grow: 0;
+}
+
+textarea, p {
+  font-family: 'Exo 2', sans-serif;
+}
+
+.list-item {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1em;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.url {
+  display: flex;
+  flex-grow: 1;
+}
+
+.original {
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 160px;
+}
+
+.options {
+  display: flex;
+  margin: 0.5em 1em;
+  gap: 1em;
+  align-items: baseline;
+  justify-content: flex-end;
+  font-size: 14px;
+}
+
+.options button {
+  font-size: inherit;
+  padding: 0.2em 0.4em;
+}
+
+.error {
+  border: 1px dotted red;
+  padding: 0.5em;
+  margin: 1em 0;
+  background-color: #ff000020;
+}
