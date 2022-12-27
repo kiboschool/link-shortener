@@ -27,7 +27,7 @@ def select_url(shortened)
 end
 
 def update_url(url, shortened)
-  DB.execute("UPDATE urls SET shortened = :shortened WHERE urls.id = :id", shortened: shortened, id: url[:id])
+  DB.execute("UPDATE urls SET shortened = :shortened WHERE urls.id = :id", shortened: shortened, id: url["id"])
 end
 
 PAGE_SIZE = 50
@@ -45,7 +45,7 @@ def random_short_name
 end
 
 def canonicalize(url)
-  if url.starts_with?("http")
+  if url.start_with?("http")
     url
   else
     "http://" + url
@@ -64,21 +64,30 @@ post "/" do
 end
 
 get '/urls' do
-  "all"
+  page = params["page"] || 1
+  urls = select_all_urls(page)
+  erb :all, {}, urls: urls, next_page: page + 1
 end
 
 get '/urls/edit/:short' do
-  "edit"
+  url = select_url(params["short"]).first
+  erb :edit, {}, url: url, error: nil
 end
 
 post '/urls/edit/:short' do
-  "update"
+  url = select_url(params["short"]).first
+  shortened = params['shortened']
+  update_url(url, shortened)
+  redirect to "urls/edit/#{shortened}"
 end
 
 post '/urls/delete/:short' do
-  "delete"
+  url = select_url(params["short"]).first
+  delete_from_db(params["short"])
+  redirect to "urls"
 end
 
 get '/:short' do
-  "redirect"
+  url = select_url(params["short"]).first
+  redirect url['original']
 end
