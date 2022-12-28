@@ -14,13 +14,14 @@ same (and faster to build each one).
 - Express
 - Fastify
 - Bun
-
 - Sinatra
-- Rails
+
+- Spring Boot (wip)
 - Go
-- Laravel
 - .Net
-- Spring/Boot
+- Laravel
+- Rails
+- Elixir
 
 
 ## Lots of different ways
