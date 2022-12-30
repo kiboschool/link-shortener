@@ -1,6 +1,10 @@
 # Link shortener - flask
 
-Flask app to shorten URLs. Stores urls in a SQLite database.
+Demo Flask app to shorten URLs. 
+
+Stores urls in a SQLite database.
+
+Live Demo: https://ls.up.railway.app/urls
 
 ## Getting Started
 
