@@ -1,83 +1,34 @@
-# Url shortener
+# Link shortener
 
-remap urls to shorter ones / redirect 302 on access
+A link shortener like [bitly](https://bitly.com/), [tinyurl](https://tinyurl.com/), or [short.io](https://short.io/).
 
-Using the same html, css, and logic every time, so they should all be roughly the
-same (and faster to build each one).
+Built using lots of different web frameworks, to demonstrate similarities and
+differences between them.
+
+Different versions use the same html, css, and logic every time, so all versions 
+should be roughly the same.
+
+## Features
+
+* Create a new short url from a given link
+* When navigating to the short url, the app will redirect to the original link
+* View all the short urls that have been created
+* Edit or delete a short url
+
+non-features (things the app does not have):
+- users or logins
+- click tracking
+- custom domains
 
 ## Languages and frameworks
 
-- Flask
-- Django
-- FastAPI
-- Node
-- Express
-- Fastify
-- Bun
-- Sinatra
-
-- Spring Boot (wip)
-- Go
-- .Net
-- Laravel
-- Rails
-- Elixir
-
-
-## Lots of different ways
-
-- using different js and python frameworks
-- store in a real database
-- store in mongo
-- hashing the url? needs to be a two-way function, so maybe some other
-    compression
-
-## JS Frameworks
-
-### "raw" JS
-
-- [x] https://node.readthedocs.io/en/latest/api/http/ /node
-- [x] https://bun.sh/ /bun (with ejs and bun's sqlite)
-- https://deno.land/
-
-### "top tier" frameworks
-
-- [x] https://www.fastify.io/: /fastify (with ejs + prisma)
-- [x] https://expressjs.com/ /express (ejs with express-generator, prisma)
-- https://remix.run/
-- https://nextjs.org/
-- https://nuxtjs.org/
-- https://kit.svelte.dev/
-
-### other frameworks I guess
-
-- https://strapi.io/
-- https://hapi.dev/
-- https://adonisjs.com/
-- https://nestjs.com/
-- https://blitzjs.com/
-- https://www.meteor.com/
-- https://emberjs.com/
-- https://redwoodjs.com/
-- https://koajs.com/
-- https://keystonejs.com/
-- https://sailsjs.com/
-- https://feathersjs.com/
-- https://directus.io/
-- https://amplication.com/
-
-## Python Top Frameworks
-
-- [x] https://flask.palletsprojects.com/en/2.2.x/ /flask (with sqlite)
-- [x] https://fastapi.tiangolo.com/ /fastapi (sqlite + sqlalchemy)
-- [x] https://www.djangoproject.com/ /django (sqlite)
-- https://docs.aiohttp.org/en/stable/
-
-## More Python
-
-- https://docs.cherrypy.dev/en/latest/
-- http://www.hug.rest/
-- https://falconframework.org/
-- http://bottlepy.org/docs/dev/
-- https://www.tornadoweb.org/en/stable/
+- [Flask](/flask)
+- [Django](/django)
+- [FastAPI](/fastapi)
+- [Node](/node)
+- [Express](/express)
+- [Fastify](/fastify)
+- [Bun](/bun)
+- [Sinatra](/sinatra)
+- [Spring Boot (wip)](/spring)
 

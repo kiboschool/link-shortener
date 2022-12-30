@@ -6,6 +6,20 @@ Stores urls in a SQLite database.
 
 Live Demo: https://ls.up.railway.app/urls
 
+## Features
+
+Similar to [bitly](https://bitly.com/), [tinyurl](https://tinyurl.com/), or [short.io](https://short.io/).
+
+* Create a new short url from a given link
+* When navigating to the short url, the app will redirect to the original link
+* View all the short urls that have been created
+* Edit or delete a short url
+
+Features it does not have:
+- users or logins
+- click tracking
+- custom domains
+
 ## Getting Started
 
 Requires recent Python (developed with 3.10.9)
@@ -31,20 +45,6 @@ flask run
 ```
 
 Starts the app on localhost:5000
-
-## Features
-
-Similar to [bitly](https://bitly.com/), [tinyurl](https://tinyurl.com/), or [short.io](https://short.io/).
-
-* Create a new short url from a given link
-* When navigating to the short url, the app will redirect to the original link
-* View all the short urls that have been created
-* Edit or delete a short url
-
-Features it does not have:
-- users or logins
-- click tracking
-- custom domains
 
 ## Files
 
