@@ -56,3 +56,8 @@ Features it does not have:
 * static/
   * favicon.png: image for the tab bar
   * style.css: styles for the site
+
+Other files:
+* .gitignore: prevents some files from being tracked by Git
+* Procfile: configuration for deployment
+* requirements.txt: dependency versions, mostly for deployment

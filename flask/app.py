@@ -148,3 +148,6 @@ def update(short):
     else:
         return abort(404, "No such shortcode")
 
+# Run the app if this file is run
+if __name__ == '__main__':
+    app.run(debug=True, port=os.getenv("PORT", default=5000))
