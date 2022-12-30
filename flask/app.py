@@ -6,26 +6,34 @@ import random
 
 app = Flask(__name__)
 
-DATABASE = 'database.db'
+##################
+# Database helpers
+##################
+DATABASE_FILE = 'database.db'
+
+# Get a useable connection to the database
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
+        db = g._database = sqlite3.connect(DATABASE_FILE)
         db.row_factory = sqlite3.Row
     return db
 
+# Close the database connection when the app shuts down
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
 
-def db_fetch(query, args=(), one=False):
+# return the results from a database query
+def db_query(query, args=(), one=False):
     cur = get_db().execute(query, args)
     rv = cur.fetchall()
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
+# execute a statement on the database
 def db_execute(query, args=()):
     conn = get_db()
     conn.execute(query, args)
@@ -39,7 +47,7 @@ def add_to_db(shortened, original):
     })
 
 def get_from_db(shortened):
-    return db_fetch("SELECT * FROM urls WHERE urls.shortened = :shortened", {
+    return db_query("SELECT * FROM urls WHERE urls.shortened = :shortened", {
         "shortened": shortened,
     }, one=True)
 
@@ -51,7 +59,7 @@ def update_in_db(url, shortened):
 
 PAGE_SIZE = 50
 def get_all_from_db(page):
-    return db_fetch("SELECT * FROM urls LIMIT :limit OFFSET :offset", {
+    return db_query("SELECT * FROM urls LIMIT :limit OFFSET :offset", {
         "limit": PAGE_SIZE,
         "offset": PAGE_SIZE * (page - 1),
     })
@@ -61,6 +69,10 @@ def delete_from_db(shortened):
         "shortened": shortened,
     })
 
+##################
+# Helper methods
+##################
+
 CHARS = string.ascii_letters + string.digits
 def random_short_name():
     return "".join(random.choices(CHARS, k=6))
@@ -69,6 +81,9 @@ def short_to_url(shortname):
     url = app.url_for(endpoint='shortname', short=shortname, _external=True)
     return url
 
+##################
+# Application routes
+##################
 @app.route('/', methods=["GET"])
 def new():
     return render_template('new.html')
