@@ -13,23 +13,46 @@ import java.util.List;
 @Controller
 public class LinkShortenerController {
 
+  private final UrlRepository repository;
+
+  LinkShortenerController(UrlRepository repository) {
+    this.repository = repository;
+  }
+
   @GetMapping("/")
   public String index(Model model) {
     return "new";
   }
 
+  @PostMapping("/")
+  public String createUrl(Model model) {
+    return "created";
+  }
+
   @GetMapping("/urls")
-  public String urls(Model model) {
-    String message = "this is inserted in the template";
-    List<String> tasks = Arrays.asList("a", "b", "c", "d", "e", "f", "g");
-    model.addAttribute("message", message);
-    model.addAttribute("tasks", tasks);
-    return "bar";
+  public String allUrls(Model model) {
+    List<Url> urls = repository.findAll();
+    model.addAttribute("urls", urls);
+    return "all";
+  }
+
+  @PostMapping("/urls/delete/{short}")
+  public String deleteUrl() {
+    return "all";
+  }
+
+  @GetMapping("/urls/edit/{short}")
+  public String editUrl() {
+    return "edit";
+  }
+
+  @PostMapping("/urls/edit/{short}")
+  public String updateUrl() {
+    return "edit";
   }
 
   @GetMapping("/{short}")
   public String urlRedirect() {
-    return "redirect";
+    return "all";
   }
-
 }
