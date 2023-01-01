@@ -2,9 +2,10 @@ package com.example.linkshortener;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import java.util.Arrays;
@@ -25,7 +26,15 @@ public class LinkShortenerController {
   }
 
   @PostMapping("/")
-  public String createUrl(Model model) {
+  public String createUrl(@RequestParam String url, Model model, UriComponentsBuilder uriComponentsBuilder) {
+    Url created = new Url(url);
+    repository.save(created);
+    String shortenedUrl = uriComponentsBuilder
+            .replacePath(created.getShortened())
+            .replaceQuery(null)
+            .build().toUriString();
+    model.addAttribute("original", url);
+    model.addAttribute("shortened_url", shortenedUrl);
     return "created";
   }
 

@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 public class Url {
 
   @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
+  @GeneratedValue(strategy=GenerationType.IDENTITY)
   private Long id;
   private String original;
   private String shortened;
@@ -31,5 +31,14 @@ public class Url {
 
   public String getShortened() {
     return shortened;
+  }
+
+  public Url(String original) {
+    this.original = original;
+    this.shortened = randomShortName();
+  }
+
+  private String randomShortName() {
+    return "abced";
   }
 }
