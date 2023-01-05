@@ -1,9 +1,11 @@
 # Link shortener
 
-A link shortener like [bitly](https://bitly.com/), [tinyurl](https://tinyurl.com/), or [short.io](https://short.io/).
+Live Demo: https://ls.up.railway.app/urls
 
-Built using lots of different web frameworks, to demonstrate similarities and
-differences between them.
+This app is a link shortener like [bitly](https://bitly.com/), [tinyurl](https://tinyurl.com/), or [short.io](https://short.io/).
+
+This repo has several implementations of the same application, using different 
+languages and web frameworks.
 
 Different versions use the same html, css, and logic every time, so all versions 
 should be roughly the same.
@@ -15,20 +17,20 @@ should be roughly the same.
 * View all the short urls that have been created
 * Edit or delete a short url
 
-non-features (things the app does not have):
-- users or logins
-- click tracking
-- custom domains
+Features the app does not have:
+* users or logins
+* click tracking
+* custom domains
 
 ## Languages and frameworks
 
 - [Flask](/flask)
 - [Django](/django)
 - [FastAPI](/fastapi)
-- [Node](/node)
 - [Express](/express)
 - [Fastify](/fastify)
 - [Bun](/bun)
 - [Sinatra](/sinatra)
 - [Spring Boot (wip)](/spring)
+- [Node (wip)](/node)
 

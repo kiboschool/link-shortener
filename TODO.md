@@ -1,28 +1,25 @@
 # TODO
 
-rebuild in top web languages / frameworks:
-
 - Go
 - .Net
 - Laravel
 - Rails
 - Elixir
 
-## Different dbs/ tech
+## Different dbs
 
 - MongoDB
 - Some other db?
-- Actual postgres
 
 ## JS Frameworks
 
 ### "raw" JS
 
-- [x] https://node.readthedocs.io/en/latest/api/http/ /node
+- [ ] https://node.readthedocs.io/en/latest/api/http/ /node
 - [x] https://bun.sh/ /bun (with ejs and bun's sqlite)
 - https://deno.land/
 
-### "top tier" frameworks
+### Most popular JS frameworks
 
 - [x] https://www.fastify.io/: /fastify (with ejs + prisma)
 - [x] https://expressjs.com/ /express (ejs with express-generator, prisma)
@@ -31,7 +28,7 @@ rebuild in top web languages / frameworks:
 - https://nuxtjs.org/
 - https://kit.svelte.dev/
 
-### other JS frameworks I guess
+### Other JS frameworks
 
 - https://strapi.io/
 - https://hapi.dev/
@@ -48,14 +45,14 @@ rebuild in top web languages / frameworks:
 - https://directus.io/
 - https://amplication.com/
 
-## Python Top Frameworks
+## Most Popular Python Frameworks
 
 - [x] https://flask.palletsprojects.com/en/2.2.x/ /flask (with sqlite)
 - [x] https://fastapi.tiangolo.com/ /fastapi (sqlite + sqlalchemy)
 - [x] https://www.djangoproject.com/ /django (sqlite)
 - https://docs.aiohttp.org/en/stable/
 
-## More Python Frameworks
+## Other Python Frameworks
 
 - https://docs.cherrypy.dev/en/latest/
 - http://www.hug.rest/

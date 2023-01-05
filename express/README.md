@@ -1,12 +1,29 @@
-# Url shortener - Express
+# Link shortener - Express
 
-https://expressjs.com/en/starter/generator.html
+Demo Express app to shorten URLs.
 
-Get started:
+Kickstarted with the [Express Generator](https://expressjs.com/en/starter/generator.html)
+
+## Getting started
 
 - Install Dependencies: `npm install`
-- Setup DB: install postgres, add a `DATABASE_URL` to `.env`, and `npx prisma migrate dev`
+- Setup DB:
+  - Install postgres, create and run a database
+  - Add a `DATABASE_URL` to `.env`
+  - Run `npx prisma migrate dev`
 - Run the dev server: `npm run start`
+
+## Prisma
+
+Prisma is used to manage the Postgres database. The docs are good:
+
+- [Getting started](https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases-typescript-postgres)
+- [CLI reference](https://www.prisma.io/docs/reference/api-reference/command-reference)
+
+The workflow is (more or less):
+- edit `schema.prisma`
+- run `npx prisma generate`
+- if needed, run `npx prisma migrate dev` to update the database
 
 ## Routes
 

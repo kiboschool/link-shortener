@@ -4,22 +4,6 @@ Demo Flask app to shorten URLs.
 
 Stores urls in a SQLite database.
 
-Live Demo: https://ls.up.railway.app/urls
-
-## Features
-
-Similar to [bitly](https://bitly.com/), [tinyurl](https://tinyurl.com/), or [short.io](https://short.io/).
-
-* Create a new short url from a given link
-* When navigating to the short url, the app will redirect to the original link
-* View all the short urls that have been created
-* Edit or delete a short url
-
-Features it does not have:
-- users or logins
-- click tracking
-- custom domains
-
 ## Getting Started
 
 Requires recent Python (developed with 3.10.9)
@@ -48,20 +32,20 @@ Starts the app on localhost:5000
 
 ## Files
 
-* app.py: Application logic
-* database.db: The sqlite database
-* initdb.py: initializes the database
-* schema.sql: the SQL query to initialize the database
-* templates/
-  * all.html: page to list all the urls
-  * new.html: form to create a new url
-  * created.html: success page after creating a url
-  * edit.html: form to edit a url
-* static/
-  * favicon.png: image for the tab bar
-  * style.css: styles for the site
+* `app.py`: Application logic
+* `database.db`: The sqlite database
+* `initdb.py`: initializes the database
+* `schema.sql`: the SQL query to initialize the database
+* `templates/`
+  * `all.html`: page to list all the urls
+  * `new.html`: form to create a new url
+  * `created.html`: success page after creating a url
+  * `edit.html`: form to edit a url
+* `static/`
+  * `favicon.png`: image for the tab bar
+  * `style.css`: styles for the site
 
 Other files:
-* .gitignore: prevents some files from being tracked by Git
-* Procfile: configuration for deployment
-* requirements.txt: dependency versions, mostly for deployment
+* `.gitignore`: prevents some files from being tracked by Git
+* `Procfile`: configuration for deployment
+* `requirements.txt`: dependency versions, mostly for deployment
