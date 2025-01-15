@@ -3,6 +3,13 @@ const urllib = require('url');
 const querystring = require('querystring');
 const ejs = require('ejs')
 const statik = require('node-static')
+require('dotenv/config');
+const { drizzle } = require('drizzle-orm/libsql');
+const { eq } = require('drizzle-orm');
+const schema = require("./schema.ts")
+const urls = schema.urls
+
+const db = drizzle(process.env.DB_FILE_NAME, { logger: true, schema });
 
 const port = 3000
 
@@ -29,31 +36,31 @@ const redirect = (res, url) => {
 }
 
 /* Database */
-const urls = [];
-
-const addToDB = (shortened, original) => {
-  urls.push({shortened, original});
+const addToDB = async (shortened, original) => {
+  const insert = db.insert(urls)
+  const q = insert.values({shortened, original});
+  return await q
 }
 
-const getFromDB = (shortened) => {
-  return urls.find(url => url.shortened == shortened)
+const getFromDB = async (shortened) => {
+  return await db.query.urls.findFirst({
+    where: eq(urls.shortened, shortened)
+  });
 }
 
-const updateInDB = (url, shortened) => {
-  url.shortened = shortened;
+const updateInDB = async (url, shortened) => {
+  return await db.update(urls).set({ shortened }).where(eq(urls.id, url.id))
 }
 
-const deleteFromDB = (shortened) => {
-  const index = urls.findIndex(url => url.shortened == shortened);
-  if (index != -1) {
-    urls.splice(index, 1);
-  }
+const deleteFromDB = async (shortened) => {
+  return await db.delete(urls).where(eq(urls.shortened, shortened))
 }
 
 const pageSize = 50;
-const getAllFromDB = (page) => {
-  return urls.slice((page - 1) * pageSize, page * pageSize);
+const getAllFromDB = async (page) => {
+  return await db.select().from(urls).limit(pageSize).offset(pageSize * (page - 1));
 }
+
 
 /* Helpers */
 // 6-character random short name
@@ -82,29 +89,32 @@ const readBody = (req, callback) => {
   })
 }
 
-const handleCreateUrl = (req, res) => {
-  return readBody(req, (body) => {
+const handleCreateUrl = async (req, res) => {
+  return readBody(req, async (body) => {
     let original = urllib.parse(body.url)
     if (!original.protocol) {
       original = urllib.parse("https://" + body.url)
     }
     original = new URL(original.href).href
     let shortened = randomShortName();
-    addToDB(shortened, original)
+    await addToDB(shortened, original)
     let shortenedUrl = toUrl(req, shortened)
     return renderTemplate(res, "templates/created.ejs", {shortenedUrl, original})
   });
 }
 
-const handleGetAllUrls = (req, res) => {
-  let urls = getAllFromDB(1);
+const handleGetAllUrls = async (req, res) => {
+
+  let parsed = urllib.parse(req.url)
+  let page = req.url.split('page=')[1]
+  let urls = await getAllFromDB(page);
   urls.forEach(url => {
     url.shortenedUrl = toUrl(req, url.shortened)
   })
   return renderTemplate(res, "templates/all.ejs", { urls, nextPage: "2"})
 }
 
-const handleRequest = (req, res) => {
+const handleRequest = async (req, res) => {
   if (req.url.startsWith('/public')) {
     console.log('static fileserver')
     return fileserver.serve(req, res);
@@ -112,15 +122,13 @@ const handleRequest = (req, res) => {
     return renderTemplate(res, "templates/new.ejs")
   } else if (req.url == "/" && req.method == "POST") {
     return handleCreateUrl(req, res);
-  } else if (req.url == "/urls" && req.method == "GET") {
-    return handleGetAllUrls(req, res);
   } else if (req.url.startsWith("/urls/delete/") && req.method == "POST") {
     let shortened = req.url.split('/')[3]
-    deleteFromDB(shortened)
+    await deleteFromDB(shortened)
     return redirect(res, "/urls")
   } else if (req.url.startsWith("/urls/edit/") && req.method == "GET") {
     let shortened = req.url.split('/')[3]
-    let url = getFromDB(shortened)
+    let url = await getFromDB(shortened)
     if (url) {
       return renderTemplate(res, "templates/edit.ejs", { hostname: req.headers.host, url, error: null })
     } else {
@@ -128,19 +136,21 @@ const handleRequest = (req, res) => {
     }
   } else if (req.url.startsWith("/urls/edit/") && req.method == "POST") {
     let shortened = req.url.split('/')[3]
-    let url = getFromDB(shortened)
+    let url = await getFromDB(shortened)
     if (url) {
-      return readBody(req, (body) => {
+      return readBody(req, async (body) => {
         let updated = body.shortened
-        updateInDB(url, updated)
+        await updateInDB(url, updated)
         return redirect(res, "/urls")
       })
     } else {
       return render(res, '<h1>404: Page not found</h1>', 404)
     }
+  } else if (req.url.startsWith("/urls") && req.method == "GET") {
+    return handleGetAllUrls(req, res);
   } else {
     let shortened = req.url.slice(1);
-    let url = getFromDB(shortened)
+    let url = await getFromDB(shortened)
     if (url) {
       return redirect(res, url.original)
     } else {
