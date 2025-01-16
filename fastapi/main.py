@@ -35,14 +35,14 @@ def create(request: Request, url: str = Form(), db: Session = Depends(get_db)):
     return templates.TemplateResponse("created.html", {
         "request": request,
         "original": db_url.original,
-        "shortened_url": request.url.netloc + "/" + db_url.shortened
+        "shortened_url": "http://" + request.url.netloc + "/" + db_url.shortened
     })
 
 @app.get('/urls', response_class=HTMLResponse)
 def all_urls(request: Request, page: int | None = 1, db: Session = Depends(get_db)):
     urls = get_urls(db, page)
     urls = [{
-        "shortened_url": request.url.netloc + "/" + url.shortened,
+        "shortened_url": "http://" + request.url.netloc + "/" + url.shortened,
         "original": url.original,
         "shortened": url.shortened,
         } for url in urls]
@@ -84,13 +84,13 @@ def edit(shortened: str, request: Request, db: Session = Depends(get_db)):
     else:
         return JSONResponse(status_code=404, content={"message": "Item not found"})
 
-@app.post('/urls/edit/{shortened}')
-def update(shortened: str, request: Request, updated_shortened: str = Form(),  db: Session = Depends(get_db)):
-    url = get_url(db, shortened)
+@app.post('/urls/edit/{short}')
+def update(short: str, request: Request, shortened: str = Form(),  db: Session = Depends(get_db)):
+    url = get_url(db, short)
     if url and url.original:
         try:
-            update_url(db, url, updated_shortened)
-            return RedirectResponse("/urls/edit/" + updated_shortened, status_code=302)
+            update_url(db, url, shortened)
+            return RedirectResponse("/urls/edit/" + shortened, status_code=302)
         except:
             return templates.TemplateResponse("edit.html", {
                 "hostname": request.url.hostname,

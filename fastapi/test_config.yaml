@@ -1,0 +1,9 @@
+# fastapi/test_config.yaml
+host: localhost 
+port: 8000
+start_command: uv run fastapi run
+db_setup:
+  - python -c "import database; database.Base.metadata.create_all(database.engine)"
+db_cleanup:
+  - python -c "import database; db = database.SessionLocal(); db.query(database.UrlModel).delete(); db.commit(); db.close()"
+

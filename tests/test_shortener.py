@@ -16,6 +16,7 @@ def test_create_url_adds_protocol(app_server):
     # Let's test the behavior via redirection
     created = app_server.create_url("example.com")
     response = requests.get(created.shortened_url, allow_redirects=False)
+    print(response.headers)
     assert response.headers['Location'].startswith('https://')
 
 def test_redirect(app_server):

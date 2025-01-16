@@ -30,7 +30,7 @@ class Url(UrlBase):
     id: int
     shortened: str
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class UrlCreate(UrlBase):
     pass
