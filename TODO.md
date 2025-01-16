@@ -1,7 +1,6 @@
 # TODO
 
 Tests:
-- sinatra
 - spring
 
 ## popular frameworks / langs

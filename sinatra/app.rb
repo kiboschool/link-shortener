@@ -41,14 +41,14 @@ end
 
 CHARS = "abcdefghijklmnopqrstuvwxyz0123456789".split('').freeze
 def random_short_name
-  6.times.map { CHARS.sample}.join
+  6.times.map { CHARS.sample }.join
 end
 
 def canonicalize(url)
   if url.start_with?("http")
     url
   else
-    "http://" + url
+    "https://" + url
   end
 end
 
@@ -78,16 +78,20 @@ post '/urls/edit/:short' do
   url = select_url(params["short"]).first
   shortened = params['shortened']
   update_url(url, shortened)
-  redirect to "urls/edit/#{shortened}"
+  redirect to("urls/edit/#{shortened}"), 302
 end
 
 post '/urls/delete/:short' do
   url = select_url(params["short"]).first
   delete_from_db(params["short"])
-  redirect to "urls"
+  redirect(to("urls"), 302)
 end
 
 get '/:short' do
   url = select_url(params["short"]).first
-  redirect url['original']
+  if url
+    redirect url['original'], 302
+  else
+    halt 404, "shortlink not found"
+  end
 end

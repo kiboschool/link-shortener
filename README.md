@@ -48,6 +48,6 @@ Features the app does not have:
 - [Fastify](/fastify)
 - [Bun](/bun)
 - [Sinatra](/sinatra)
+- [Node](/node)
 - [Spring Boot (wip)](/spring)
-- [Node (wip)](/node)
 

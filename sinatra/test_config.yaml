@@ -1,0 +1,8 @@
+# sinatra/test_config.yaml
+host: localhost
+port: 4567
+start_command: ruby app.rb
+db_setup:
+  - echo 'sinatra sqlite db in database.db'
+db_cleanup:
+  - rm database.db
