@@ -62,7 +62,7 @@ fastify.register(view, { engine: { ejs } });
 fastify.register(formbody)
 fastify.register(fstatic, { prefix: '/public/', root: path.join(url.fileURLToPath(new URL('.', import.meta.url)), 'public') })
 
-const shortToUrl = (shortname, req) => `${req.hostname}/${shortname}`
+const shortToUrl = (shortname, req) => `${req.protocol || 'http'}://${req.hostname}/${shortname}`
 
 async function routes (fastify, options) {
   fastify.get("/", (req, reply) => {

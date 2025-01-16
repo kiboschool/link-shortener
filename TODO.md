@@ -1,7 +1,6 @@
 # TODO
 
 Tests:
-- fastify
 - sinatra
 - spring
 

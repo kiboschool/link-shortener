@@ -1,0 +1,8 @@
+# fastify/test_config.yaml
+host: localhost
+port: 3000
+start_command: node server.js
+db_setup:
+  - npx prisma migrate dev
+db_cleanup:
+  - echo 'db is okay, no worries'
