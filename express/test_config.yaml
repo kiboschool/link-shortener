@@ -1,0 +1,10 @@
+# express/test_config.yaml
+host: localhost
+port: 3000
+start_command: npm run start
+env:
+  DATABASE_URL: "postgresql://rob@localhost/express-link-shortener"
+db_setup:
+  - npx prisma migrate deploy
+db_cleanup:
+  - echo 'DELETE FROM "Url";' | npx prisma db execute --stdin 

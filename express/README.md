@@ -8,8 +8,9 @@ Kickstarted with the [Express Generator](https://expressjs.com/en/starter/genera
 
 - Install Dependencies: `npm install`
 - Setup DB:
-  - Install postgres, create and run a database
-  - Add a `DATABASE_URL` to `.env`
+  - Install postgres (`brew install postgresql && brew services start postgresql`)
+  - create and run a database (`createdb express-link-shortener`)
+  - Add a `DATABASE_URL` to `.env` (`DATABASE_URL="postgresql://rob@localhost/express-link-shortener"`)
   - Run `npx prisma migrate dev`
 - Run the dev server: `npm run start`
 

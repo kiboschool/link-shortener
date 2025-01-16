@@ -20,7 +20,7 @@ function randomShortName() {
 }
 
 const getHostname = (req) => `${req.hostname}:${req.app.get('port')}`
-const shortToUrl = (shortname, req) => `${getHostname(req)}/${shortname}`
+const shortToUrl = (shortname, req) => `${req.protocol}://${getHostname(req)}/${shortname}`
 
 /* DB */
 const prisma = new PrismaClient()
@@ -77,11 +77,12 @@ app.get('/', function(req, res) {
 
 app.post("/", async (req, res) => {
   // if url is valid but missing protocol, add it
-  let parsed = url.parse(req.body.url)
+  let parsed = url.parse(req.body.url, false, true)
   if (!parsed.protocol) {
-    parsed = url.parse("https://" + req.body.url)
+    parsed = url.parse("https://" + req.body.url, false, true)
   }
   let original = new URL(parsed.href).href
+  console.log(req.body.url, original)
   let shortened = randomShortName();
   await addToDB(shortened, original)
   let shortenedUrl = shortToUrl(shortened, req)

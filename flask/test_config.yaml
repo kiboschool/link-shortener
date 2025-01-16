@@ -1,0 +1,13 @@
+# flask/test_config.yaml
+host: localhost
+port: 3000
+start_command: flask run --port 3000
+env:
+  FLASK_APP: app.py
+  FLASK_ENV: testing
+db_setup:
+  - rm -f database.db
+  - python initdb.py
+db_cleanup:
+  - rm -f database.db
+  - python initdb.py
