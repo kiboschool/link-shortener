@@ -29,7 +29,7 @@ def create(request):
     shortened = random_short_name()
     u = Url(shortened=shortened, original=url)
     u.save()
-    shortened_url = request.get_host() + "/" + shortened
+    shortened_url = request.scheme + "://" + request.get_host() + "/" + shortened
     return render(request, 'created.html', {
         "shortened_url": shortened_url,
         "original": url
@@ -49,7 +49,7 @@ def all(request):
     end = start + pagesize
     urls = Url.objects.all()[start:end]
     urls = [{
-         "shortened_url": request.get_host() + "/" + url.shortened,
+        "shortened_url": request.scheme + "://" + request.get_host() + "/" + url.shortened,
          "original": url.original,
          "shortened": url.shortened,
          } for url in urls]

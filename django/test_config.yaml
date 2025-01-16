@@ -1,0 +1,8 @@
+# django/test_config.yaml
+host: localhost
+port: 8000
+start_command: python manage.py runserver
+db_setup:
+  - python manage.py migrate
+db_cleanup:
+  - echo "db ok"

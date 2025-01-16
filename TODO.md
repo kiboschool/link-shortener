@@ -1,5 +1,12 @@
 # TODO
 
+Tests:
+- fastify
+- sinatra
+- spring
+
+## popular frameworks / langs
+
 - Go
 - .Net
 - Laravel
@@ -15,7 +22,7 @@
 
 ### "raw" JS
 
-- [ ] https://node.readthedocs.io/en/latest/api/http/ /node
+- [x] https://node.readthedocs.io/en/latest/api/http/ /node
 - [x] https://bun.sh/ /bun (with ejs and bun's sqlite)
 - https://deno.land/
 
