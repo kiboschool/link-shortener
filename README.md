@@ -8,7 +8,24 @@ This repo has several implementations of the same application, using different
 languages and web frameworks.
 
 Different versions use the same html, css, and logic every time, so all versions 
-should be roughly the same.
+should be the same.
+
+
+## Testing
+
+Test all the versions with
+
+```
+pytest tests/
+```
+
+or an individual version with
+
+```
+pytest tests/ --app=flask
+```
+
+for some app name.
 
 ## Features
 

@@ -1,0 +1,8 @@
+# bun/test_config.yaml
+host: localhost
+port: 3000
+start_command: bun run app.ts
+db_setup:
+  - echo 'bun sqlite db in bun-urls.sqlite'
+db_cleanup:
+  - echo 'bun sqlite db in bun-urls.sqlite'

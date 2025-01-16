@@ -95,7 +95,7 @@ function params(req: Request) {
 }
 
 const host = (req) => req.headers.get('host')
-const shortToUrl = (shortname, req) => `${req.headers.get('host')}/${shortname}`
+const shortToUrl = (shortname, req) => `${req.protocol || 'http'}://${req.headers.get('host')}/${shortname}`
 const err = () => new Response("something went wrong", { status: 500 })
 
 /* Application logic */
