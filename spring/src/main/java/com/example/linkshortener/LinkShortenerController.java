@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,8 +42,11 @@ public class LinkShortenerController {
   }
 
   @GetMapping("/urls")
-  public String allUrls(Model model) {
+  public String allUrls(Model model, ServletRequest request) {
     List<Url> urls = repository.findAll();
+    String host = request.getServerName() + ":" + request.getServerPort();
+    String protocol = "http";
+    urls.forEach(url -> url.setShortenedUrl(protocol + "://" + host + "/" + url.getShortened()));
     model.addAttribute("urls", urls);
     return "all";
   }
@@ -60,7 +66,7 @@ public class LinkShortenerController {
     return "edit";
   }
 
-  @GetMapping("/{short}")
+  @GetMapping("/{short:[^.]+}")
   public String urlRedirect() {
     return "all";
   }

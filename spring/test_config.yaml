@@ -1,0 +1,8 @@
+# spring/test_config.yaml
+host: localhost
+port: 8080
+start_command: gradle bootRun
+db_setup:
+  - echo "setup db?"
+db_cleanup:
+  - echo "db clean?"
