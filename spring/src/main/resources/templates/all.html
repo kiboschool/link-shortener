@@ -27,7 +27,7 @@
       </div>
       <div class="options">
         <a href="#" th:href="@{/urls/edit/{shortened}(shortened=${url.shortened})}">Edit</a>
-        <form method="post" action="/urls/delete/{{ url.shortened }}"><button>Delete</button></form>
+        <form method="post" th:action="@{/urls/delete/{shortened}(shortened=${url.shortened})}"><button>Delete</button></form>
       </div>
     </div>
 

@@ -11,5 +11,7 @@ public interface UrlRepository extends PagingAndSortingRepository<Url, Long>, Cr
 
   Url findById(long id);
 
+  Url findByShortened(String shortened);
+
   Url save(Url url);
 }

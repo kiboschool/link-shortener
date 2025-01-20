@@ -1,8 +1,5 @@
 # TODO
 
-Tests:
-- spring
-
 ## popular frameworks / langs
 
 - Go
@@ -10,6 +7,8 @@ Tests:
 - Laravel
 - Rails
 - Elixir
+- C
+- Rust
 
 ## Different dbs
 

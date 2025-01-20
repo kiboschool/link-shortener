@@ -19,5 +19,4 @@ Gradle will install the dependencies before starting the development server.
 - `LinkShortenerController.java` has most of the logic for the application
 - Templates (using Thymeleaf) are in /resources/templates
 - Static files are in /resources/static
-
-css isn't loading?
+- h2 configured to just use the 'file' database (it writes / reads from `h2db.mv.db`)

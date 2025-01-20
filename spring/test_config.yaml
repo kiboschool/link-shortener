@@ -3,6 +3,6 @@ host: localhost
 port: 8080
 start_command: gradle bootRun
 db_setup:
-  - echo "setup db?"
+  - echo "gradle will set things up"
 db_cleanup:
-  - echo "db clean?"
+  - echo "don't bother, but if needed, rm the h2.... file"

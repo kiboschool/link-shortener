@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 import java.util.Random;
 
 @Entity
@@ -13,6 +14,8 @@ public class Url {
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   private Long id;
   private String original;
+
+  @Column(unique = true)
   private String shortened;
   public String shortenedUrl;
 
@@ -39,10 +42,16 @@ public class Url {
     this.shortenedUrl = shortenedUrl;
   }
 
+  public void setShortened(String shortened) {
+    this.shortened = shortened;
+  }
+
   protected Url() {}
 
   public Url(String original) {
-    this.original = original;
+    this.original = original.startsWith("http://") || original.startsWith("https://") 
+      ? original 
+      : "https://" + original;
     this.shortened = randomShortName();
   }
 

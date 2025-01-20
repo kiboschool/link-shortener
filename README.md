@@ -49,5 +49,4 @@ Features the app does not have:
 - [Bun](/bun)
 - [Sinatra](/sinatra)
 - [Node](/node)
-- [Spring Boot (wip)](/spring)
-
+- [Spring Boot](/spring)

@@ -12,25 +12,24 @@
 <main>
   <h1>Edit</h1>
 
-  <h3>This url: <span>{{ hostname }}/{{ url['shortened'] }}</span></h3>
-  <h3>Redirects to: <span>{{ url.original }}</span></h3>
+  <h3>This url: <span th:text="${url.shortenedUrl}">Error: should be a url</span></h3>
+  <h3>Redirects to: <span th:text="${url.original}">Error: should be the original Url</span></h3>
 
   <p>Edit the short name:</p>
   <div>
     <form method="post">
-      {{ hostname }}/
-      <input type="text" name="shortened" value="{{ url.shortened }}"></input>
+      <span th:text="${hostname}">hostname/</span>/
+      <input type="text" name="shortened" th:value="${url.shortened}"></input>
       <button>Save</button>
     </form>
   </div>
-  {% if error %}
-    <div class="error">
-      <strong>Error</strong>: {{ error }}
-    </div>
-  {% endif %}
 
+  <div th:if="${error}" class="error">
+    <strong>Error</strong>: <span th:text="${error}">error<span>
+  </div>
 
-  <form method="post" action="urls/delete/{{ url.shortened }}"><button>Delete</button></form>
+  
+  <form method="post" th:action="@{/urls/delete/{s}(s=${url.shortened})}"><button>Delete</button></form>
 
   <p><a href="/">Create another</a></p>
   <p><a href="/urls">View all</a></p>
