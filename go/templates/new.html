@@ -1,0 +1,29 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Url Shortener - Go</title>
+  <meta name="description" content="Demo URL shortener app w/ go">
+  <link rel="stylesheet" href="public/style.css">
+  <link rel="icon" sizes="192x192" href="public/favicon.png">
+</head>
+<body>
+<main>
+  <h1>
+    Create a new short url
+  </h1>
+
+  <h3><span>Enter a url</span></h3>
+  
+  <form method="post" action="/">
+    <input placeholder="https://example.com" type="text" name="url" id="url" />
+    <button>CREATE</button>
+  </form>
+
+  <h3>The shortened version will redirect to the one you enter.</h3>
+
+  <a href="/urls">View All</a>
+</main>
+
+</body>
+</html>

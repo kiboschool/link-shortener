@@ -1,8 +1,9 @@
 # TODO
 
+- Go
+
 ## popular frameworks / langs
 
-- Go
 - .Net
 - Laravel
 - Rails
