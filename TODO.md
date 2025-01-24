@@ -1,15 +1,18 @@
 # TODO
 
-- Go
-
 ## popular frameworks / langs
 
 - .Net
-- Laravel
+- Laravel (maybe also Symfony)
 - Rails
-- Elixir
+- Elixir / Phoenix
 - C
-- Rust
+- Rust (actix, axum, ntex, faf)
+- Kotlin (ktor)
+- OCaml (Dream, or httpaf, or Opium)
+- Haskell (Servant?)
+- Clojure
+- Swift
 
 ## Different dbs
 

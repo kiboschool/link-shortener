@@ -25,7 +25,7 @@ or an individual version with
 pytest tests/ --app=flask
 ```
 
-for some app name.
+for some app name (the name of the directory where the app lives).
 
 ## Features
 
@@ -41,12 +41,13 @@ Features the app does not have:
 
 ## Languages and frameworks
 
-- [Flask](/flask)
-- [Django](/django)
-- [FastAPI](/fastapi)
-- [Express](/express)
-- [Fastify](/fastify)
 - [Bun](/bun)
-- [Sinatra](/sinatra)
+- [Django](/django)
+- [Express](/express)
+- [FastAPI](/fastapi)
+- [Fastify](/fastify)
+- [Flask](/flask)
+- [Go](/go)
 - [Node](/node)
+- [Sinatra](/sinatra)
 - [Spring Boot](/spring)
