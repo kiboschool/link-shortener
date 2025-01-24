@@ -5,4 +5,4 @@ start_command: gradle bootRun
 db_setup:
   - echo "gradle will set things up"
 db_cleanup:
-  - echo "don't bother, but if needed, rm the h2.... file"
+  - rm h2db.mv.db

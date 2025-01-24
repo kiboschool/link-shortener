@@ -16,16 +16,18 @@ should be the same.
 Test all the versions with
 
 ```
-pytest tests/
+pytest
 ```
 
 or an individual version with
 
 ```
-pytest tests/ --app=flask
+pytest --app=flask
 ```
 
 for some app name (the name of the directory where the app lives).
+
+Note: running all the tests is a bit slow since it spins up each app, and does it all serially. Since apps sometimes collide on the same port, hard to parallelize. If we let the port be configured, that'd make parallel testing easier.
 
 ## Features
 

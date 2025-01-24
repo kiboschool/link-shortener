@@ -5,4 +5,4 @@ start_command: python manage.py runserver
 db_setup:
   - python manage.py migrate
 db_cleanup:
-  - echo "db ok"
+  - python manage.py flush --noinput

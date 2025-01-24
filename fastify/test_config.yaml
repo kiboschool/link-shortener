@@ -3,6 +3,6 @@ host: localhost
 port: 3000
 start_command: node server.js
 db_setup:
-  - npx prisma migrate dev
+  - npx prisma db push --force-reset
 db_cleanup:
-  - echo 'db is okay, no worries'
+  - npx prisma db push --force-reset
