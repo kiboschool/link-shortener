@@ -1,8 +1,10 @@
 package main
 
 import (
+    "fmt"
     "math/rand"
     "time"
+    "path"
     "database/sql"
     "net/http"
     "html/template"
@@ -23,7 +25,7 @@ func initDB(db *sql.DB) error {
     createTable := `
     CREATE TABLE IF NOT EXISTS urls (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        short_url TEXT NOT NULL,
+        shortened TEXT NOT NULL,
         original_url TEXT NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );`
@@ -32,27 +34,44 @@ func initDB(db *sql.DB) error {
     return err
 }
 
-func createURL(db *sql.DB, originalURL string, shortURL string) error {
+func createURL(db *sql.DB, originalURL string, shortened string) error {
     _, err := db.Exec(`
-        INSERT INTO urls (original_url, short_url) 
+        INSERT INTO urls (original_url, shortened) 
         VALUES (?, ?)`,
-        originalURL, shortURL)
+        originalURL, shortened)
     return err
 }
 
-func getURL(db *sql.DB, shortURL string) (string, error) {
+func deleteURL(db *sql.DB, shortened string) error {
+    _, err := db.Exec(`
+        DELETE FROM urls 
+        WHERE shortened = ?`,
+        shortened)
+    return err
+}
+
+func updateURL(db *sql.DB, oldShortened string, newShortened string) error {
+    _, err := db.Exec(`
+        UPDATE urls 
+        SET shortened = ? 
+        WHERE shortened = ?`,
+        newShortened, oldShortened)
+    return err
+}
+
+func getURL(db *sql.DB, shortened string) (string, error) {
     var originalURL string
     err := db.QueryRow(`
         SELECT original_url 
         FROM urls 
-        WHERE short_url = ?`,
-        shortURL).Scan(&originalURL)
+        WHERE shortened = ?`,
+        shortened).Scan(&originalURL)
     return originalURL, err
 }
 
 func listURLs(db *sql.DB) ([]URL, error) {
     rows, err := db.Query(`
-        SELECT short_url, original_url, created_at 
+        SELECT shortened, original_url, created_at 
         FROM urls 
         ORDER BY created_at DESC`)
     if err != nil {
@@ -73,8 +92,8 @@ func listURLs(db *sql.DB) ([]URL, error) {
 }
 
 func handleRedirect(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-    shortURL := r.URL.Path[1:]
-    originalURL, err := getURL(db, shortURL)
+    shortened := r.URL.Path[1:]
+    originalURL, err := getURL(db, shortened)
     if err != nil {
         http.Error(w, "URL not found", http.StatusNotFound)
         return
@@ -92,9 +111,98 @@ func generateRandomString() string {
   return string(b)
 }
 
+func makeDomainURL(shortened string, r *http.Request) string {
+  // note: ought to look at the request to determine the scheme
+  return "http://" + r.Host + "/" + shortened
+}
+
+// works if the url is... the right shape I guess
+func getPathPart(r *http.Request) string {
+  _, last := path.Split(r.URL.Path)
+  return last
+}
+
 func main() {
     db, _ := sql.Open("sqlite", "urls.db")
+    initDB(db)
     
+    http.HandleFunc("/urls", func(w http.ResponseWriter, r *http.Request) {
+      urls, err := listURLs(db)
+      if err != nil {
+        fmt.Println(err)
+        http.Error(w, "Could not fetch urls", http.StatusBadRequest)
+        return
+      }
+      for i := range urls { 
+        s := makeDomainURL(urls[i].Short, r)
+        urls[i].ShortURL = s
+      }
+      nextPage := 1
+      data := struct {
+        Urls []URL
+        NextPage int
+      } {
+        urls,
+        nextPage,
+      }
+      templates.ExecuteTemplate(w, "all.html", data)
+    })
+
+    http.HandleFunc("/urls/delete/", func(w http.ResponseWriter, r *http.Request) {
+      shortened := getPathPart(r)
+      fmt.Println("deleting " + shortened)
+      err := deleteURL(db, shortened)
+      if err != nil {
+          fmt.Println(err)
+          http.Error(w, "Could not delete url", http.StatusBadRequest)
+          return
+      }
+      http.Redirect(w, r, "/urls", http.StatusSeeOther)
+    })
+
+    http.HandleFunc("/urls/edit/", func(w http.ResponseWriter, r *http.Request) {
+      if r.Method == http.MethodGet {
+        shortened := getPathPart(r)
+        fmt.Println("request edit for " + shortened)
+        originalURL, err := getURL(db, shortened)
+        if err != nil {
+          fmt.Println(err)
+          http.Error(w, "Could not find url", http.StatusNotFound)
+          return
+        }
+        data := struct {
+          Shortened string
+          Original string
+          ShortURL string
+          Hostname string
+        } {
+          shortened,
+          originalURL,
+          makeDomainURL(shortened, r),
+          "http://" + r.Host + "/",
+        }
+        templates.ExecuteTemplate(w, "edit.html", data)
+      } else if r.Method == http.MethodPost {
+        shortened := getPathPart(r)
+        if err := r.ParseForm(); err != nil {
+          fmt.Println(err)
+          http.Error(w, "Could not parse form", http.StatusBadRequest)
+          return
+        }
+        newShortened := r.FormValue("shortened")
+        fmt.Println("update " + shortened + " to " + newShortened)
+        if err := updateURL(db, shortened, newShortened); err != nil {
+          fmt.Println(err)
+          http.Error(w, "Could not update url", http.StatusBadRequest)
+          return
+        }
+        http.Redirect(w, r, "/urls/edit/" + newShortened, http.StatusFound)
+      } else {
+        http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+      }
+    })
+
+
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
       if r.Method == http.MethodGet {
         // render the form to create a url
@@ -102,18 +210,19 @@ func main() {
       } else if r.Method == http.MethodPost {
         // handle the form submission
         if err := r.ParseForm(); err != nil {
+          fmt.Println(err)
           http.Error(w, "Could not parse form", http.StatusBadRequest)
           return
         }
         url := r.FormValue("url")
-        shortUrl := generateRandomString()
-        createURL(db, url, shortUrl)
+        shortcode := generateRandomString()
+        createURL(db, url, shortcode)
         data := struct {
           Original string
           ShortenedUrl string
         } {
           url,
-          shortUrl,
+          makeDomainURL(shortcode, r),
         }
         templates.ExecuteTemplate(w, "created.html", data);
       } else {
@@ -123,5 +232,6 @@ func main() {
 
     fs := http.FileServer(http.Dir("public"))
     http.Handle("/public/", http.StripPrefix("/public/", fs))
+    fmt.Println("listening on :8080")
     http.ListenAndServe(":8080", nil)
 }

@@ -12,25 +12,19 @@
 <main>
   <h1>Edit</h1>
 
-  <h3>This url: <span><%= hostname %>/<%= url.shortened %></span></h3> 
-  <h3>Redirects to: <span><%= url.original %></span></h3>
+  <h3>This url: <span>{{ .ShortURL }}</span></h3> 
+  <h3>Redirects to: <span>{{ .Original }}</span></h3>
 
   <p>Edit the short name:</p>
   <div>
     <form method="post">
-      <%= hostname %>/
-      <input type="text" name="shortened" value="<%= url.shortened %>"></input>
+      {{ .Hostname }}
+      <input type="text" name="shortened" value="{{ .Shortened }}"></input>
       <button>Save</button>
     </form>
   </div>
-  <% if (error) { %>
-    <div class="error">
-      <strong>Error</strong>: <%= error %>
-    </div>
-  <% } %>
 
-
-  <form method="post" action="urls/delete/<%= url.shortened %>"><button>Delete</button></form>
+  <form method="post" action="/urls/delete/{{ .Shortened }}"><button>Delete</button></form>
 
   <p><a href="/">Create another</a></p>
   <p><a href="/urls">View all</a></p>
