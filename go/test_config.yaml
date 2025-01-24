@@ -1,0 +1,8 @@
+# go/test_config.yaml
+host: localhost
+port: 8080
+start_command: ./link-shortener
+db_setup:
+  - go build
+db_cleanup:
+  - echo 'go sqlite db in urls.db'

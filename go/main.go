@@ -2,9 +2,10 @@ package main
 
 import (
     "fmt"
-    "math/rand"
     "time"
     "path"
+    "strings"
+    "math/rand"
     "database/sql"
     "net/http"
     "html/template"
@@ -35,6 +36,9 @@ func initDB(db *sql.DB) error {
 }
 
 func createURL(db *sql.DB, originalURL string, shortened string) error {
+    if !strings.HasPrefix(originalURL, "http") {
+        originalURL = "https://" + originalURL
+    } 
     _, err := db.Exec(`
         INSERT INTO urls (original_url, shortened) 
         VALUES (?, ?)`,
@@ -91,8 +95,7 @@ func listURLs(db *sql.DB) ([]URL, error) {
     return urls, nil
 }
 
-func handleRedirect(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-    shortened := r.URL.Path[1:]
+func handleRedirect(w http.ResponseWriter, r *http.Request, db *sql.DB, shortened string) {
     originalURL, err := getURL(db, shortened)
     if err != nil {
         http.Error(w, "URL not found", http.StatusNotFound)
@@ -104,7 +107,7 @@ func handleRedirect(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 func generateRandomString() string {
-  b := make([]byte, 8)
+  b := make([]byte, 6)
   for i := range b {
     b[i] = letters[rand.Intn(len(letters))]
   }
@@ -123,6 +126,7 @@ func getPathPart(r *http.Request) string {
 }
 
 func main() {
+    
     db, _ := sql.Open("sqlite", "urls.db")
     initDB(db)
     
@@ -157,7 +161,7 @@ func main() {
           http.Error(w, "Could not delete url", http.StatusBadRequest)
           return
       }
-      http.Redirect(w, r, "/urls", http.StatusSeeOther)
+      http.Redirect(w, r, "/urls", http.StatusFound)
     })
 
     http.HandleFunc("/urls/edit/", func(w http.ResponseWriter, r *http.Request) {
@@ -205,8 +209,14 @@ func main() {
 
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
       if r.Method == http.MethodGet {
-        // render the form to create a url
-        templates.ExecuteTemplate(w, "new.html", nil)
+        shortened := getPathPart(r)
+        if shortened != "" {
+          // find and redirect
+          handleRedirect(w,r,db,shortened) 
+        } else {
+          // render the form to create a url
+          templates.ExecuteTemplate(w, "new.html", nil)
+        }
       } else if r.Method == http.MethodPost {
         // handle the form submission
         if err := r.ParseForm(); err != nil {
@@ -233,5 +243,7 @@ func main() {
     fs := http.FileServer(http.Dir("public"))
     http.Handle("/public/", http.StripPrefix("/public/", fs))
     fmt.Println("listening on :8080")
-    http.ListenAndServe(":8080", nil)
+    err := http.ListenAndServe(":8080", nil)
+    fmt.Println(err)
+    fmt.Println("exiting")
 }

@@ -4,6 +4,7 @@ import yaml
 import time
 import requests
 import subprocess
+import signal
 from bs4 import BeautifulSoup
 from pathlib import Path
 from typing import Optional, Dict, Any, List
@@ -99,7 +100,8 @@ class AppServer:
             cmd,
             shell=True,
             cwd=self.app_dir,
-            env=env
+            env=env,
+            start_new_session=True 
         )
         
         # Wait for server to start AND be ready
@@ -116,6 +118,7 @@ class AppServer:
     def stop(self):
         """Stop the server and cleanup"""
         if self.process:
+            os.killpg(self.process.pid, signal.SIGKILL)
             self.process.terminate()
             self.process.wait()
             self.process = None

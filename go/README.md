@@ -2,7 +2,6 @@
 
 net/http + SQLite + html/template
 
-
-
-
-
+```
+go run main.go
+```
